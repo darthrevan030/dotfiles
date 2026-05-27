@@ -1,0 +1,10 @@
+user.email=smartsamarth03@gmail.com
+user.name=darthrevan030
+credential.https://github.com.helper=
+credential.https://github.com.helper=!/usr/bin/gh auth git-credential
+credential.https://gist.github.com.helper=
+credential.https://gist.github.com.helper=!/usr/bin/gh auth git-credential
+core.excludesfile=/home/samarth/.gitignore_global
+core.autocrlf=input
+init.defaultbranch=main
+pull.rebase=false
