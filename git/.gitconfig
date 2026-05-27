@@ -19,3 +19,9 @@
     st = status
     lg = log --oneline --graph --decorate -15
     undo = reset --soft HEAD~1
+[credential "https://github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/usr/bin/gh auth git-credential
