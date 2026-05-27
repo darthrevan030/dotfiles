@@ -5,24 +5,24 @@
 # INTERACTIVE CHECK — don't do anything if not interactive
 # =============================================================================
 case $- in
-    *i*) ;;
-      *) return;;
+*i*) ;;
+*) return ;;
 esac
 
 # =============================================================================
 # OS DETECTION
 # =============================================================================
 case "$OSTYPE" in
-  linux-gnu*)
-    if grep -qi microsoft /proc/version 2>/dev/null; then
-      OS="wsl"
-    else
-      OS="linux"
-    fi
-    ;;
-  msys*|cygwin*) OS="windows" ;;
-  darwin*)       OS="mac"     ;;
-  *)             OS="unknown" ;;
+linux-gnu*)
+  if grep -qi microsoft /proc/version 2>/dev/null; then
+    OS="wsl"
+  else
+    OS="linux"
+  fi
+  ;;
+msys* | cygwin*) OS="windows" ;;
+darwin*) OS="mac" ;;
+*) OS="unknown" ;;
 esac
 
 # =============================================================================
@@ -95,10 +95,10 @@ fi
 if command -v fzf &>/dev/null; then
   # Load fzf keybindings (Ctrl+R, Ctrl+T, Alt+C)
   if [ "$OS" = "wsl" ] || [ "$OS" = "linux" ]; then
-    [ -f /usr/share/doc/fzf/examples/key-bindings.bash ] && \
+    [ -f /usr/share/doc/fzf/examples/key-bindings.bash ] &&
       source /usr/share/doc/fzf/examples/key-bindings.bash
   elif [ "$OS" = "windows" ]; then
-    [ -f "$HOME/.fzf/shell/key-bindings.bash" ] && \
+    [ -f "$HOME/.fzf/shell/key-bindings.bash" ] &&
       source "$HOME/.fzf/shell/key-bindings.bash"
   fi
 fi
@@ -139,7 +139,7 @@ fi
 # =============================================================================
 if [ "$OS" = "wsl" ] || [ "$OS" = "linux" ]; then
   if command -v atuin &>/dev/null; then
-    eval "$(atuin init bash)"
+    eval "$(atuin init bash --disable-up-arrow)"
   fi
 fi
 
