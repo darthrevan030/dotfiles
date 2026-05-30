@@ -9,7 +9,7 @@ My portable config for WSL and Git Bash.
 
 ## Neovim
 
-Neovim config lives separately at the nvim repo[https://github.com/darthrevan030/nvim]
+Neovim config lives separately at the [nvim repo](https://github.com/darthrevan030/nvim)
 
 ## Setup on a new machine
 
