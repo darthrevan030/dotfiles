@@ -69,6 +69,10 @@ alias du='du -sh'
 alias ports='ss -tulnp 2>/dev/null || netstat -tulnp'
 alias myip='curl -s ifconfig.me'
 
+cl() {
+  cd "$1" && ls -CF --color=auto
+}
+
 # Git
 alias gs='git status'
 alias gp='git push'
