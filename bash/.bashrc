@@ -1,5 +1,4 @@
-# ~/.bashrc
-# Portable config for WSL (Ubuntu) and Git Bash (Windows)
+# Portable config for WSL (Ubuntu), Git Bash (Windows), and macOS
 
 # =============================================================================
 # INTERACTIVE CHECK — don't do anything if not interactive
@@ -24,6 +23,14 @@ msys* | cygwin*) OS="windows" ;;
 darwin*) OS="mac" ;;
 *) OS="unknown" ;;
 esac
+
+# =============================================================================
+# HOMEBREW (mac only) — must run early so later command -v checks
+# (fnm, zoxide, fzf, atuin, etc.) can actually find brew-installed binaries
+# =============================================================================
+if [ "$OS" = "mac" ]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
 
 # =============================================================================
 # HISTORY
@@ -104,6 +111,9 @@ if command -v fzf &>/dev/null; then
   elif [ "$OS" = "windows" ]; then
     [ -f "$HOME/.fzf/shell/key-bindings.bash" ] &&
       source "$HOME/.fzf/shell/key-bindings.bash"
+  elif [ "$OS" = "mac" ]; then
+    [ -f "$(brew --prefix)/opt/fzf/shell/key-bindings.bash" ] &&
+      source "$(brew --prefix)/opt/fzf/shell/key-bindings.bash"
   fi
 fi
 
@@ -128,14 +138,20 @@ elif [ "$OS" = "windows" ]; then
   if command -v fnm &>/dev/null; then
     eval "$(fnm env --shell bash)"
   fi
+elif [ "$OS" = "mac" ]; then
+  # fnm installed via Homebrew, already on PATH from the shellenv block above
+  if command -v fnm &>/dev/null; then
+    eval "$(fnm env --shell bash)"
+  fi
 fi
 
 # =============================================================================
 # UV — Python package manager
+# Checks for the command itself rather than a hardcoded install path, since
+# uv can land at ~/.local/bin (official installer) or /opt/homebrew/bin (brew)
 # =============================================================================
-if [ -f "$HOME/.local/bin/uv" ]; then
+if command -v uv &>/dev/null; then
   export PATH="$HOME/.local/bin:$PATH"
-  . "$HOME/.local/bin/env" 2>/dev/null || true
 fi
 
 # =============================================================================
@@ -172,6 +188,13 @@ if [ "$OS" = "windows" ]; then
 fi
 
 # =============================================================================
+# MACOS-SPECIFIC
+# =============================================================================
+if [ "$OS" = "mac" ]; then
+  alias dotfiles='cd ~/.dotfiles'
+fi
+
+# =============================================================================
 # COMPLETIONS
 # =============================================================================
 if ! shopt -oq posix; then
@@ -179,6 +202,8 @@ if ! shopt -oq posix; then
     . /usr/share/bash-completion/bash_completion
   elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
+  elif [ -f "$(brew --prefix 2>/dev/null)/etc/profile.d/bash_completion.sh" ]; then
+    . "$(brew --prefix)/etc/profile.d/bash_completion.sh"
   fi
 fi
 
